@@ -1,67 +1,50 @@
+var config = require('./config');
 var express = require('express');
 var exphbs  = require('express-handlebars');
-
 var bodyParser = require('body-parser');
-
+var http = require('http');
 var mongoose = require('mongoose');
 
 
-//create express app
+// create express app
 var app = express();
 
-//keep reference to config
-// app.config = config;
+// keep reference to config
+app.config = config;
 
-//setup the web server
-// app.server = http.createServer(app);
+// setup the web server
+app.server = http.createServer(app);
 
-var app = express();
 
-//setup mongoose
-app.db = mongoose.createConnection('mongodb://localhost/test1');
+// setup mongoose
+app.db = mongoose.createConnection(config.mongodb.uri);
 app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', function () {
-  //and... we have a data store
+  // and... we have a data store
   console.log("We connect to mongodb");
 });
 
-//config data models
+// config data models
 require('./models')(app, mongoose);
 
+// middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.engine('.hbs', exphbs({
+  path: 'views',
+  layoutPath: 'views/layouts',
   defaultLayout: 'main',
   extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
 
-app.get('/', function (req, res) {
-    res.render('home', {cat: catMen.name});
+// setup routes
+require('./routes')(app);
+
+//listen up
+app.server.listen(app.config.port, function(){
+  //and... we're live
+  console.log('Server is running on port ' + config.port);
 });
 
-app.get('/dashboard', function (req, res) {
-  Kitten.findOne({ form: "sam_id" }, function(err, cat) {
-    res.render('dashboard', {cat: cat.name});
-  });
-});
-
-
-app.get('/mongoose', function (req, res) {
-    mongoose.model('Kitten').find(function(err, cats) {
-      // res.render('dashboard', {cat: cats});
-      res.send(cats);
-    });
-});
-
-app.post('/dashboard', function (req, res) {
-    console.log("we reseive post dashboard request, cat name: " + req.body.catName);
-    Kitten.findOneAndUpdate({ form: "sam_id" }, {$set: {name: req.body.catName}}, {upsert:true}, function() {
-      res.redirect('/dashboard');
-    });
-});
-
-app.listen(3000);
