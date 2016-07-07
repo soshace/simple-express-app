@@ -4,6 +4,7 @@ exports = module.exports = function(app, mongoose) {
   //embeddable docs first
   require('./schema/Developer')(app, mongoose);
   require('./schema/Translation')(app, mongoose);
+  require('./schema/User')(app, mongoose);
 
   //then regular docs
   // require('./schema/User')(app, mongoose);
