@@ -15,8 +15,11 @@ app.get('/', function (req, res) {
 
 app.get('/dashboard', require('./views/dashboard/index').init);
 
+app.get('/dashboard/login', require('./views/dashboard/login/index').init);
+app.post('/dashboard/login', require('./views/dashboard/login/index').login);
+
 app.get('/dashboard/developers', require('./views/dashboard/developers/index').init);
-app.get('/dashboard/developers/:id', require('./views/dashboard/developers/index').get);
+app.get('/dashboard/developers/:id', require('./views/dashboard/developers/index').getById);
 
 app.post('/dashboard/developers', require('./views/dashboard/developers/index').save);
   // //front end

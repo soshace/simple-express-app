@@ -7,6 +7,9 @@ var session = require('express-session');
 var http = require('http');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
+var errorHandler = require('errorhandler');
+require('rootpath')();
+var HttpError = require('error').HttpError;
 
 
 // create express app
@@ -27,6 +30,7 @@ app.db.once('open', function () {
   console.log("We connect to mongodb");
 });
 
+app.set('error', __dirname + '/error');
 // config data models
 require('./models')(app, mongoose);
 
@@ -40,17 +44,37 @@ app.use(session({
   cookie: config.session.cookie,
   store: new MongoStore({mongooseConnection: app.db}),
 }));
+app.use(require('./middleware/sendHttpError'));
 
 app.engine('.hbs', exphbs({
   path: 'views',
   layoutPath: 'views/layouts',
   defaultLayout: 'main',
+  partialsDir: 'views/partials',
   extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
 
 // setup routes
 require('./routes')(app);
+
+app.use(function(err, req, res, next) {
+  if (typeof err == 'number') {
+    err = new HttpError(err);
+  }
+
+  if (err instanceof HttpError) {
+    res.sendHttpError(err);
+  } else {
+    if (app.get('env') == 'development') {
+      errorHandler()(err, req, res, next);
+    } else {
+      log.error(err);
+      err = new HttpError(500);
+      res.sendHttpError(err);
+    }
+  }
+});
 
 //listen up
 app.server.listen(app.config.port, function(){
