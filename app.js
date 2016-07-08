@@ -2,8 +2,11 @@ var config = require('./config');
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var http = require('http');
 var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(session);
 
 
 // create express app
@@ -30,6 +33,13 @@ require('./models')(app, mongoose);
 // middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(session({
+  secret: config.session.secret,
+  key: config.session.key,
+  cookie: config.session.cookie,
+  store: new MongoStore({mongooseConnection: app.db}),
+}));
 
 app.engine('.hbs', exphbs({
   path: 'views',
