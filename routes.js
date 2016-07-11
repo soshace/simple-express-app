@@ -2,14 +2,7 @@
 
 exports = module.exports = function(app, passport) {
 
-// Generic error handler used by all enpoints
-function handleError(res, reason, message, code) {
-  console.log('Error: ' + reason);
-  res.status(code || 500).json({'error': message});
-}
-
 app.get('/', function (req, res) {
-    // res.render('home', {cat: catMen.name});
   res.redirect('/dashboard');
 });
 

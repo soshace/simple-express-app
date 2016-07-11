@@ -3,23 +3,9 @@
 var HttpError = require('error').HttpError;
 
 exports.init = function(req, res){
-  // res.render('developers/index');
-
   req.app.db.models.Developer.find({}, function(err, developers) {
     if (err) return next(err);
     res.render('./dashboard/developers/index', {layout: 'dashboard', developers: developers});
-    // res.json(developers);
-    // req.app.db.models.Developer.findOne({}, function(err, developers) {
-    // req.app.db.models.Translation.findById(developers.name, function(err, name) {
-    //   console.log(name.translation[0].text);
-    // });
-    // console.log(developers);
-    // // console.log(developers.name.translation);
-    // if (err) {
-    //   handleError(res, err.message, "Failed to get Developers.");
-    // } else {
-    //   // res.status(200).json(docs);
-    // }
   });
 };
 

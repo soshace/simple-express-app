@@ -1,5 +1,6 @@
 var config = require('./config');
 var express = require('express');
+var path = require('path');
 var exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -46,6 +47,9 @@ app.use(session({
 }));
 app.use(require('./middleware/loadUser'));
 app.use(require('./middleware/sendHttpError'));
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 
 app.engine('.hbs', exphbs({
   path: 'views',

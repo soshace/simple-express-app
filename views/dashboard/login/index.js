@@ -1,7 +1,11 @@
 'use strict';
 var async = require('async');
 exports.init = function(req, res, next){
-  res.render('./dashboard/login/index', {layout: 'dashboard', user: req.user});
+  res.render('./dashboard/login/index', {
+    layout: 'dashboard',
+    title: 'Login',
+    user: req.user
+  });
 };
 
 exports.login = function(req, res, next){

@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>Dashboard</title>
-</head>
-<body>
+  {{> dashboard/head}}
 
-  <p>Links</p>
-  <ul>
-    <li><a href="/dashboard">Home to dashboard</a></li>
-    <li><a href="/dashboard/developers">Developers</a></li>
-    <li><a href="/dashboard/login">Login</a></li>
-  </ul>
-  {{{body}}}
+  <body>
+    {{> dashboard/navigation}}
 
-</body>
+    {{#if error}}
+      {{> dashboard/error}}
+    {{else}}
+      {{{body}}}
+    {{/if}}
+
+  </body>
 </html>
