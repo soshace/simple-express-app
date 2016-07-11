@@ -5,6 +5,7 @@ var exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var passport = require('passport');
 var http = require('http');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
@@ -45,6 +46,9 @@ app.use(session({
   cookie: config.session.cookie,
   store: new MongoStore({mongooseConnection: app.db}),
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(app, passport);
 app.use(require('./middleware/loadUser'));
 app.use(require('./middleware/sendHttpError'));
 
@@ -61,7 +65,7 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 // setup routes
-require('./routes')(app);
+require('./routes')(app, passport);
 
 app.use(function(err, req, res, next) {
   if (typeof err == 'number') {
