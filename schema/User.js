@@ -15,6 +15,10 @@ exports = module.exports = function(app, mongoose) {
       type: String,
       required: true
     },
+    salt: {
+      type: String,
+      required: true
+    },
     created: {
       type: Date,
       default: Date.now
@@ -33,6 +37,10 @@ exports = module.exports = function(app, mongoose) {
     })
     .get(function() { return this._plainPassword; });
 
+  userSchema.methods.checkPassword = function(password) {
+    return this.encryptPassword(password) === this.hashedPassword;
+  };
+
   userSchema.statics.authorize = function(username, password, callback) {
     var User = this;
 
@@ -46,8 +54,7 @@ exports = module.exports = function(app, mongoose) {
           if (user.checkPassword(password)) {
             callback(null, user);
           } else {
-            // next(new HttpError(403, "Password Error"));
-            callback(err);
+            callback(new AuthError("Password Error"));
           }
         } else {
           console.log("User not found");
@@ -55,7 +62,7 @@ exports = module.exports = function(app, mongoose) {
           console.log("user: " + user);
           user.save(function(err) {
             console.log("Try to save user");
-            if (err) { 
+            if (err) {
               console.log(err);
               return callback(err);
             }

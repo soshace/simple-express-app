@@ -1,7 +1,7 @@
 'use strict';
 var async = require('async');
 exports.init = function(req, res, next){
-  res.render('./dashboard/login/index', {layout: 'dashboard'});
+  res.render('./dashboard/login/index', {layout: 'dashboard', user: req.user});
 };
 
 exports.login = function(req, res, next){
@@ -13,14 +13,13 @@ exports.login = function(req, res, next){
   User.authorize(username, password, function(err, user) {
     if (err) {
       if (err instanceof AuthError) {
-        // return next(new HttpError(403, err.message));
-        return next(403);
+        return next(new HttpError(403, err.message));
       } else {
         return next(err);
       }
     }
 
     req.session.user = user.id;
-    res.send({});
+    res.redirect('/dashboard/login/');
   });
 };

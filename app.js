@@ -44,6 +44,7 @@ app.use(session({
   cookie: config.session.cookie,
   store: new MongoStore({mongooseConnection: app.db}),
 }));
+app.use(require('./middleware/loadUser'));
 app.use(require('./middleware/sendHttpError'));
 
 app.engine('.hbs', exphbs({
