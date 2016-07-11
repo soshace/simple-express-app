@@ -3,9 +3,16 @@
 var HttpError = require('error').HttpError;
 
 exports.init = function(req, res){
+  // if (!req.session.user) res.render('./dashboard/developers/index', {
+  //   layout: 'dashboard'
+  // });
+
   req.app.db.models.Developer.find({}, function(err, developers) {
     if (err) return next(err);
-    res.render('./dashboard/developers/index', {layout: 'dashboard', developers: developers});
+    res.render('./dashboard/developers/index', {
+      layout: 'dashboard',
+      developers: developers
+    });
   });
 };
 
@@ -27,7 +34,10 @@ exports.getById = function(req, res, next){
     developer_info.name = translateField(developer.name.translation, lang);
     developer_info.position = translateField(developer.position.translation, lang);
     developer_info.info =  translateField(developer.info.translation, lang);
-    res.json(developer_info);
+    res.render('./dashboard/developers/index', {
+      layout: 'dashboard',
+      developers: developer
+    });
   });
 };
 

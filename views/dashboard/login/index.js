@@ -4,13 +4,11 @@ exports.init = function(req, res, next){
   res.render('./dashboard/login/index', {
     layout: 'dashboard',
     title: 'Login',
-    user: req.user
   });
 };
 
 exports.login = function(req, res, next){
   var User = req.app.db.models.User;
-  // res.render('./dashboard/login/index', {layout: 'dashboard'});
   var username = req.body.username;
   var password = req.body.password;
 
