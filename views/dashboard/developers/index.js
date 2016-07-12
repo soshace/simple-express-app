@@ -1,24 +1,26 @@
 'use strict';
 
-var HttpError = require('error').HttpError;
-
-exports.init = function(req, res){
-  req.app.db.models.Developer.find({}, function(err, developers) {
-    if (err) return next(err);
-    res.render('./dashboard/developers/index', {
-      layout: 'dashboard',
-      developers: developers
-    });
-  });
-};
-
 function translateField(field, lang) {
   return field.find(function(element) {
     return element.language === lang;
   }).text;
 }
 
-exports.getById = function(req, res, next){
+var HttpError = require('error').HttpError;
+
+exports.init = function(req, res) {
+  var Developer = req.app.db.models.Developer;
+  Developer.getAllLikeDict('en', function(err, devList) {
+    console.log(devList);
+    res.render('./dashboard/developers/index', {
+        layout: 'dashboard',
+        developers: devList
+    });
+  });
+};
+
+
+exports.getById = function(req, res, next) {
   req.app.db.models.Developer.findById(req.params.id).populate('name').populate('position').populate('info').exec(function(err, developer) {
     if (err) return next(err);
     console.log(developer);
@@ -32,12 +34,12 @@ exports.getById = function(req, res, next){
     developer_info.info =  translateField(developer.info.translation, lang);
     res.render('./dashboard/developers/index', {
       layout: 'dashboard',
-      developers: developer
+      developers: developer_info
     });
   });
 };
 
-exports.save = function(req, res){
+exports.save = function(req, res) {
   var db = req.app.db;
   console.log(db.models);
   var Developer = db.model('Developer');

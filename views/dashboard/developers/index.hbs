@@ -11,6 +11,21 @@
 
 {{#if developers}}
   <div class="developers-list">
-    {{{developers}}}
+
+    <ol>
+      {{#each developers as |developer|}}
+        <li>
+        <ul>
+          {{#each developer as |value key|}}
+            <li>
+            {{key}} | {{value}}
+            </li>
+          {{/each}}
+        </ul>
+        </li>
+      {{/each}}
+    </ol>
+
+
   </div>
 {{/if}}
