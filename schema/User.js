@@ -4,6 +4,8 @@ var async = require('async');
 
 var crypto = require('crypto');
 
+var AuthError = require('error').AuthError;
+
 exports = module.exports = function(app, mongoose) {
   var userSchema = new mongoose.Schema({
     userName: {
@@ -50,7 +52,6 @@ exports = module.exports = function(app, mongoose) {
       },
       function(user, callback) {
         if (user) {
-          console.log("User found");
           if (user.checkPassword(password)) {
             callback(null, user);
           } else {
@@ -67,15 +68,3 @@ exports = module.exports = function(app, mongoose) {
   app.db.model('User', userSchema);
 };
 
-function AuthError(status, message) {
-  Error.apply(this, arguments);
-  Error.captureStackTrace(this, AuthError);
-
-  this. message = message;
-}
-
-util.inherits(AuthError, Error);
-
-AuthError.prototype.name = 'AuthError';
-
-exports.AuthError = AuthError;

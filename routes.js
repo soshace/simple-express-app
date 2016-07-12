@@ -13,8 +13,12 @@ exports = module.exports = function(app) {
 
   app.get('/dashboard/login', require('./views/dashboard/login/index').init);
   app.post('/dashboard/login',
-    passport.authenticate('local'),
-    require('./views/dashboard/login/index').login
+    passport.authenticate('local',
+      {
+        successRedirect: '/dashboard/developers',
+        failureRedirect: '/dashboard/login',
+        failureFlash: true
+      })
   );
 
   app.post('/dashboard/logout', require('./views/dashboard/logout/index').logout);

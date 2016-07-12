@@ -6,12 +6,14 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
+var flash = require('connect-flash');
 var http = require('http');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
 var errorHandler = require('errorhandler');
 require('rootpath')();
 var HttpError = require('error').HttpError;
+var AuthError = require('error').AuthError;
 
 
 // create express app
@@ -46,6 +48,7 @@ app.use(session({
   cookie: config.session.cookie,
   store: new MongoStore({mongooseConnection: app.db}),
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(app, passport);
@@ -66,24 +69,9 @@ app.set('view engine', '.hbs');
 
 // setup routes
 require('./routes')(app);
+app.use(require('error').handle);
 
-app.use(function(err, req, res, next) {
-  if (typeof err == 'number') {
-    err = new HttpError(err);
-  }
 
-  if (err instanceof HttpError) {
-    res.sendHttpError(err);
-  } else {
-    if (app.get('env') == 'development') {
-      errorHandler()(err, req, res, next);
-    } else {
-      log.error(err);
-      err = new HttpError(500);
-      res.sendHttpError(err);
-    }
-  }
-});
 
 //listen up
 app.server.listen(app.config.port, function(){

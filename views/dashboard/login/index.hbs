@@ -5,10 +5,17 @@
     <input type="text" name="username" placeholder="username" size="40">
     <input type="text" name="password" placeholder="password" size="40">
     <input type="submit" value="Login">
+    {{#if message}}
+      <span>{{{messages}}}</span>
+    {{/if}}
   </form>
 </div>
 
-<p>
-  Hello, {{{user}}}
-</p>
+{{#unless user}}
+<div>
+  <p>
+    You are not loggin yet
+  </p>
+</div>
+{{/unless}}
 

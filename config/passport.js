@@ -5,7 +5,6 @@ module.exports = function(app, passport) {
   var User = app.db.models.User;
 
   passport.serializeUser(function(user, done) {
-    console.log("Print use id: " + user.id);
     done(null, user.id);
   });
 
@@ -18,28 +17,13 @@ module.exports = function(app, passport) {
   var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
-  passport.use(new LocalStrategy(
-    function(username, password, done) {
-      User.authorize(username, password, done);
-
-      // User.findOne({ userName: username }, function (err, user) {
-      //   console.log("We find one user in localStategy: " + user);
-      //   if (err) { return done(err); }
-      //   if (!user) {
-      //     return done(null, false, { message: 'Incorrect username.' });
-      //   }
-      //   if (!user.checkPassword(password)) {
-      //     return done(null, false, { message: 'Incorrect password.' });
-      //   }
-      //   return done(null, user);
-      // });
+  passport.use(new LocalStrategy(function(username, password, done) {
+      User.authorize(username, password, function(err, user) {
+        if (err) {
+          return done(null, false, {message: err.message});
+        }
+        return done(null, user);
+      });
     }
   ));
 };
-
-
-
-
-
-
-
