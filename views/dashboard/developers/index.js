@@ -3,10 +3,6 @@
 var HttpError = require('error').HttpError;
 
 exports.init = function(req, res){
-  // if (!req.session.user) res.render('./dashboard/developers/index', {
-  //   layout: 'dashboard'
-  // });
-
   req.app.db.models.Developer.find({}, function(err, developers) {
     if (err) return next(err);
     res.render('./dashboard/developers/index', {

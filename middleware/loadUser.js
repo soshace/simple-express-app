@@ -1,13 +1,9 @@
 module.exports = function(req, res, next) {
+  /* This middleware add user object in every view if user is login */
 
-  req.user = res.locals.user = null;
-  if (!req.session.user) return next();
+  if (req.user) {
+    res.locals.user = req.user;
+  }
+  next();
 
-  var User = req.app.db.models.User;
-  User.findById(req.session.user, function(err, user) {
-    if (err) return next(err);
-
-    req.user = res.locals.user = user;
-    next();
-  });
 };

@@ -8,11 +8,8 @@ exports.init = function(req, res, next){
 };
 
 exports.login = function(req, res, next){
-  req.app.passport.authenticate('local-login', {
-    successRedirect: '/dashboard/',
-    failureRedirect: '/dashboard/login',
-    failureFlash: true
-  });
+  console.log("req.user: " + req.user);
+  res.redirect('/dashboard/developers');
   // var User = req.app.db.models.User;
   // var username = req.body.username;
   // var password = req.body.password;
