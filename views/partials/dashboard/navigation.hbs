@@ -1,22 +1,21 @@
-<nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
-    <ul class="nav navbar-nav">
+<div class="header clearfix">
+  <nav class="navbar navbar-default navbar-static-top">
+    <ul class="nav nav-pills pull-right">
       <li class="active"><a href="/dashboard">Home to dashboard</a></li>
       <li><a href="/dashboard/developers">Developers</a></li>
       <li>
-        {{#if user}}
-          <form action="/dashboard/logout" method="POST" class="navbar-form navbar-right">
-            <input type="submit" value="logout" class="btn btn-default">
-          </form>
-        {{else}}
-          <form action="/dashboard/login" method="GET" class="navbar-form navbar-right">
-            <input type="submit" value="login" class="btn btn-default">
-          </form>
-        {{/if}}
+      {{#if user}}
+        <form action="/dashboard/logout" method="POST" class="navbar-form navbar-right">
+          <input type="submit" value="logout" class="btn btn-default">
+        </form>
+      {{else}}
+        <form action="/dashboard/login" method="GET" class="navbar-form navbar-right">
+          <input type="submit" value="login" class="btn btn-default btn-sm">
+        </form>
+      {{/if}}
       </li>
-
     </ul>
-  </div>
-</nav>
+  </nav>
+</div>
 
 <!-- <p>Links</p> -->
