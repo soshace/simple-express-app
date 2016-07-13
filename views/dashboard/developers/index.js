@@ -10,11 +10,11 @@ var HttpError = require('error').HttpError;
 
 exports.init = function(req, res) {
   var Developer = req.app.db.models.Developer;
-  Developer.getAllLikeDict('en', function(err, devList) {
+  Developer.getAllLikeDict('en', function(err, developers) {
     console.log(devList);
     res.render('./dashboard/developers/index', {
         layout: 'dashboard',
-        developers: devList
+        developers: developers
     });
   });
 };

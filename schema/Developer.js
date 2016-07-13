@@ -17,10 +17,6 @@ exports = module.exports = function(app, mongoose) {
   developerSchema.statics.getAllLikeDict = function(lang, callback) {
     var Developer = this;
 
-    // async.waterfall([
-    //   function(callback) {
-    //   },
-
     Developer.find({})
       .populate('name')
       .populate('position')
@@ -45,21 +41,7 @@ exports = module.exports = function(app, mongoose) {
       }
       console.log("developersDict at the end: " + developersDict);
       callback(null, developersDict);
-
-
-
-      // if (err) return next(err);
-      // // console.log(developer);
-      // // console.log(developer.name);
-      // var developer_info = {};
-      // developer_info.name = translateField(developer.name.translation, lang);
-      // developer_info.position = translateField(developer.position.translation, lang);
-      // developer_info.info =  translateField(developer.info.translation, lang);
-
-      // developers.push(developer_info);
-
     });
-
 
   };
 
