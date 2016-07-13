@@ -24,7 +24,8 @@ exports = module.exports = function(app) {
   app.post('/dashboard/logout', require('./views/dashboard/logout/index').logout);
 
   app.get('/dashboard/developers', checkAuth, require('./views/dashboard/developers/index').init);
-  app.get('/dashboard/developers/:id', checkAuth, require('./views/dashboard/developers/index').getById);
-
   app.post('/dashboard/developers', require('./views/dashboard/developers/index').save);
+  app.get('/dashboard/developers/:id', checkAuth, require('./views/dashboard/developers/index').getById);
+  app.post('/dashboard/developers/:id', require('./views/dashboard/developers/index').updateById);
+
 };

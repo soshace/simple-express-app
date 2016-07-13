@@ -6,7 +6,7 @@
       {{#each developer}}
         <div class="form-group">
           <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
-          <input class="form-control" id="{{@key}}" type="text" value="{{this}}">
+          <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
         </div>
         <!-- {{@key}}: {{this}} -->
       {{/each}}

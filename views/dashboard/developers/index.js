@@ -10,11 +10,12 @@ function translateField(field, lang) {
 
 var HttpError = require('error').HttpError;
 
-exports.init = function(req, res) {
+exports.init = function(req, res, next) {
   var Developer = req.app.db.models.Developer;
   // Developer.getAllLikeDict(lang, function(err, developers) {
   Developer.getAllNamesIds(lang, function(err, developers) {
-    if (err) next(err);
+    console.log("Route developers: err: " + err);
+    if (err) return next(err);
     console.log(developers);
     for (var index = 0; index < developers.length; index++) {
       developers[index].href = '/dashboard/developers/' + developers[index].id;
@@ -38,16 +39,16 @@ exports.getById = function(req, res, next) {
   });
 };
 
-exports.save = function(req, res) {
+exports.save = function(req, res, next) {
   var db = req.app.db;
-  console.log(db.models);
+  // console.log(db.models);
   var Developer = db.model('Developer');
   console.log("Body on save " + JSON.stringify(req.body));
 
   var Translation = db.model('Translation');
   var name = new Translation();
   name.name = 'name';
-  name.translation.push({language: lang, text: req.body.developerName});
+  name.translation.push({language: lang, text: req.body.name});
   name.save();
 
   var position = new Translation();
@@ -62,10 +63,47 @@ exports.save = function(req, res) {
 
   var newDeveloper = new Developer();
   // console.log(newDeveloper);
-  newDeveloper.name = name._id;
-  newDeveloper.imagePath = req.body.imagePath;
-  newDeveloper.position = position._id;
-  newDeveloper.info = info._id;
+  newDeveloper.name.data = name._id;
+  newDeveloper.imagePath.data = req.body.imagePath;
+  newDeveloper.position.data = position._id;
+  newDeveloper.info.data = info._id;
+  console.log(newDeveloper);
+  newDeveloper.save(function(err) {
+    if (err) console.log(err);
+  });
+  res.redirect('/dashboard/developers/');
+};
+
+exports.updateById = function(req, res, next) {
+  var Developer = req.app.db.models.Developer;
+  Developer.findById(req.params.id)
+  var db = req.app.db;
+  // console.log(db.models);
+  var Developer = db.model('Developer');
+  console.log("Body on save " + JSON.stringify(req.body));
+
+  var Translation = db.model('Translation');
+  var name = new Translation();
+  name.name = 'name';
+  name.translation.push({language: lang, text: req.body.name});
+  name.save();
+
+  var position = new Translation();
+  position.name = 'position';
+  position.translation.push({language: lang, text: req.body.position});
+  position.save();
+
+  var info = new Translation();
+  info.name = 'info';
+  info.translation.push({language: lang, text: req.body.info});
+  info.save();
+
+  var newDeveloper = new Developer();
+  // console.log(newDeveloper);
+  newDeveloper.name.data = name._id;
+  newDeveloper.imagePath.data = req.body.imagePath;
+  newDeveloper.position.data = position._id;
+  newDeveloper.info.data = info._id;
   console.log(newDeveloper);
   newDeveloper.save(function(err) {
     if (err) console.log(err);
