@@ -1,0 +1,16 @@
+<h1>Developer</h1>
+
+{{#if developer}}
+  <form action="/dashboard/developers" method="POST">
+    <fieldset class="form-group">
+      {{#each developer}}
+        <div class="form-group">
+          <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
+          <input class="form-control" id="{{@key}}" type="text" value="{{this}}">
+        </div>
+        <!-- {{@key}}: {{this}} -->
+      {{/each}}
+    </fieldset>
+    <button type="Update" class="btn btn-success">Submit</button>
+  </form>
+{{/if}}
