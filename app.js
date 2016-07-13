@@ -42,6 +42,10 @@ require('./models')(app, mongoose);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+
+// set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
   secret: config.session.secret,
   key: config.session.key,
@@ -66,6 +70,7 @@ app.engine('.hbs', exphbs({
   extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
+
 
 // setup routes
 require('./routes')(app);

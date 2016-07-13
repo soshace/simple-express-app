@@ -5,11 +5,14 @@
   <body>
     {{> dashboard/navigation}}
 
-    {{#if error}}
-      {{> dashboard/error}}
-    {{else}}
-      {{{body}}}
-    {{/if}}
+
+    <div class="container">
+      {{#if error}}
+        {{> dashboard/error}}
+      {{else}}
+        {{{body}}}
+      {{/if}}
+    </div>
 
   </body>
 </html>
