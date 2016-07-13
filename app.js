@@ -10,11 +10,7 @@ var flash = require('connect-flash');
 var http = require('http');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
-var errorHandler = require('errorhandler');
 require('rootpath')();
-var HttpError = require('error').HttpError;
-var AuthError = require('error').AuthError;
-
 
 // create express app
 var app = express();
@@ -24,7 +20,6 @@ app.config = config;
 
 // setup the web server
 app.server = http.createServer(app);
-
 
 // setup mongoose
 app.db = mongoose.createConnection(config.mongodb.uri);

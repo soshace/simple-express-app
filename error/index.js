@@ -1,3 +1,4 @@
+var errorHandler = require('errorhandler');
 var path = require('path');
 var util = require('util');
 var http = require('http');
@@ -10,7 +11,7 @@ exports.handle = function(err, req, res, next) {
   if (err instanceof HttpError || err instanceof AuthError) {
     res.sendHttpError(err);
   } else {
-    if (app.get('env') == 'development') {
+    if (req.app.get('env') == 'development') {
       errorHandler()(err, req, res, next);
     } else {
       log.error(err);
