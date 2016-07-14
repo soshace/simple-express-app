@@ -1,16 +1,45 @@
 <h1>Developer</h1>
+<p>
+  <div class="row">
+    <button class="btn btn-warning pull-right" type="button" data-toggle="collapse" data-target="#later-information-form">Show later saved information</button>
+  </div>
+</p>
 
-{{#if developer}}
-  <form action="" method="POST">
-    <fieldset class="form-group">
-      {{#each developer}}
-        <div class="form-group">
-          <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
-          <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
-        </div>
-        <!-- {{@key}}: {{this}} -->
-      {{/each}}
-    </fieldset>
-    <button type="Update" class="btn btn-success">Submit</button>
-  </form>
-{{/if}}
+<p>
+<div id="later-information-form" class="row collapse out">
+  {{#if developer}}
+    <form action="" method="POST">
+      <fieldset class="form-group">
+        <legend class="bg-warning">Saved for later information</legend>
+        {{#each developer}}
+          <div class="form-group">
+            <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
+            <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
+          </div>
+          <!-- {{@key}}: {{this}} -->
+        {{/each}}
+      </fieldset>
+      <button type="Update" class="btn btn-warning">Save for later</button>
+      <button type="Update" class="btn btn-success">Submit</button>
+    </form>
+  {{/if}}
+</div></p>
+
+<div class="row">
+  {{#if developer}}
+    <form action="" method="POST">
+      <fieldset class="form-group">
+        <legend class="bg-success">Published information</legend>
+        {{#each developer}}
+          <div class="form-group">
+            <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
+            <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
+          </div>
+          <!-- {{@key}}: {{this}} -->
+        {{/each}}
+      </fieldset>
+      <button type="Update" class="btn btn-warning">Save for later</button>
+      <button type="Update" class="btn btn-success">Submit</button>
+    </form>
+  {{/if}}
+</div>
