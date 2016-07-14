@@ -1,36 +1,44 @@
 <h1>Developers</h1>
-<div class="insert_developer">
-  <form action="" method="post" class="form-horisontal">
-
-    <dev class="form-group">
-      <label for="name">Name</label>
-      <input type="text" name="name" placeholder="Name" size="40" class="form-control" id="name">
-    </dev>
-    <dev class="form-group">
-      <label for="imagepath">imagePath</label>
-      <input type="text" name="imagepath" placeholder="imagePath" size="40" class="form-control" id="imagepath">
-    </dev>
-    <dev class="form-group">
-      <label for="position">Position</label>
-      <input type="text" name="position" placeholder="Position" size="40" class="form-control" id="position">
-    </dev>
-    <dev class="form-group">
-      <label for="info">Info</label>
-      <input type="text" name="info" placeholder="Info" size="40" class="form-control" id="info">
-    </dev>
-    <dev class="form-group">
-      <input type="submit" value="Add" class="btn btn-success ">
-    </dev>
-  </form>
+<div class="row">
+  <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target="#add-developer">Add developer</button>
+</div>
+<div class="row">
+  <div id="add-developer" class="collapse out">
+    <form action="" method="post" class="form-horisontal">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" placeholder="Name" size="40" class="form-control" id="name">
+      </div>
+      <div class="form-group">
+        <label for="imagepath">imagePath</label>
+        <input type="text" name="imagePath" placeholder="imagePath" size="40" class="form-control" id="imagepath">
+      </div>
+      <div class="form-group">
+        <label for="position">Position</label>
+        <input type="text" name="position" placeholder="Position" size="40" class="form-control" id="position">
+      </div>
+      <div class="form-group">
+        <label for="info">Info</label>
+        <input type="text" name="info" placeholder="Info" size="40" class="form-control" id="info">
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Add" class="btn btn-success ">
+      </div>
+    </form>
+  </div>
 </div>
 
-{{#if developers}}
-  <div class="developers-list list-goup">
-    <div class="list-group-item active">Developers List</div>
-    {{#each developers as |developer|}}
-      <a href="{{{developer.href}}}" class="list-group-item">{{{developer.name}}}</a>
-    {{/each}}
+<div class="row">
 
+  <p>
+  {{#if developers}}
+    <div class="developers-list list-goup">
+      <div class="list-group-item active">Developers List</div>
+      {{#each developers as |developer|}}
+        <a href="{{{developer.href}}}" class="list-group-item">{{{developer.name}}}</a>
+      {{/each}}
+    </div>
+  {{/if}}
+  </p>
 
-  </div>
-{{/if}}
+</div>
