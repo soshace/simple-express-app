@@ -4,15 +4,21 @@
 
   <body>
     {{> dashboard/navigation}}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          {{> dashboard/sidebar}}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {{#if error}}
+            {{> dashboard/error}}
+          {{else}}
+            {{{body}}}
+          {{/if}}
+        </div>
+      </div>
+    </div> <!-- container-fluid -->
 
-
-    <div class="container">
-      {{#if error}}
-        {{> dashboard/error}}
-      {{else}}
-        {{{body}}}
-      {{/if}}
-    </div>
-
+  {{> dashboard/footer}}
   </body>
 </html>
