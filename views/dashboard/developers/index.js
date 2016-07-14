@@ -43,7 +43,7 @@ exports.save = function(req, res, next) {
   var db = req.app.db;
   // console.log(db.models);
   var Developer = db.model('Developer');
-  console.log("Body on save " + JSON.stringify(req.body));
+  // console.log("Body on save " + JSON.stringify(req.body));
 
   var Translation = db.model('Translation');
   var name = new Translation();
@@ -67,7 +67,7 @@ exports.save = function(req, res, next) {
   newDeveloper.imagePath.data = req.body.imagePath;
   newDeveloper.position.data = position._id;
   newDeveloper.info.data = info._id;
-  console.log(newDeveloper);
+  // console.log(newDeveloper);
   newDeveloper.save(function(err) {
     if (err) console.log(err);
   });
@@ -76,37 +76,15 @@ exports.save = function(req, res, next) {
 
 exports.updateById = function(req, res, next) {
   var Developer = req.app.db.models.Developer;
-  Developer.findById(req.params.id)
-  var db = req.app.db;
-  // console.log(db.models);
-  var Developer = db.model('Developer');
-  console.log("Body on save " + JSON.stringify(req.body));
-
-  var Translation = db.model('Translation');
-  var name = new Translation();
-  name.name = 'name';
-  name.translation.push({language: lang, text: req.body.name});
-  name.save();
-
-  var position = new Translation();
-  position.name = 'position';
-  position.translation.push({language: lang, text: req.body.position});
-  position.save();
-
-  var info = new Translation();
-  info.name = 'info';
-  info.translation.push({language: lang, text: req.body.info});
-  info.save();
-
-  var newDeveloper = new Developer();
-  // console.log(newDeveloper);
-  newDeveloper.name.data = name._id;
-  newDeveloper.imagePath.data = req.body.imagePath;
-  newDeveloper.position.data = position._id;
-  newDeveloper.info.data = info._id;
-  console.log(newDeveloper);
-  newDeveloper.save(function(err) {
-    if (err) console.log(err);
+  console.log(req.body);
+  var newDeveloperData = {
+    name: req.body.name,
+    position: req.body.position,
+    info: req.body.info,
+    imagePath: req.body.imagePath
+  };
+  Developer.updateDataById(req.params.id, lang, newDeveloperData, function(err, developer) {
+    if (err) return next(err);
+    res.redirect('/dashboard/developers/');
   });
-  res.redirect('/dashboard/developers/');
 };

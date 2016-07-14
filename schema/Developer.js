@@ -8,11 +8,20 @@ function translateField(field, lang) {
   }).text;
 }
 
-// function updateTranslatedField(field, lang, newValue) {
-//    field.find(function(element) {
-//     return element.language === lang;
-//   }).text;
-// }
+function updateTranslatedField(field, lang, newValue) {
+  if (!field) return;
+
+  for (var index = 0; index < field.length; index++) {
+    if (field.language == lang) {
+      field.text = newValue;
+      return;
+    }
+  }
+
+  field.find(function(element) {
+    return element.language === lang;
+  }).text;
+}
 
 exports = module.exports = function(app, mongoose) {
   var developerSchema = new mongoose.Schema({
@@ -57,7 +66,6 @@ exports = module.exports = function(app, mongoose) {
 
       if (err) return callback(err);
 
-      console.log("getAllNamesIds developers: " + developers);
       if (!developers) {
         return callback(new HttpError(404, "Developers not found"));
       }
@@ -74,7 +82,6 @@ exports = module.exports = function(app, mongoose) {
 
         developersDict.push(developerData);
       }
-      console.log("developersDict at the end: " + developersDict);
       return callback(null, developersDict);
     });
 
@@ -84,10 +91,8 @@ exports = module.exports = function(app, mongoose) {
     var Developer = this;
 
     Developer.find({}).populate('name.data').exec(function(err, developers) {
-      console.log("getAllNamesIds developers err: " + err);
       if (err) return callback(err);
 
-      console.log("getAllNamesIds developers: " + developers);
       if (!developers) {
         return callback(new HttpError(404, "Developers not found"));
       }
@@ -114,8 +119,6 @@ exports = module.exports = function(app, mongoose) {
     Developer.findById(id).populate('name.data').populate('position.data').populate('info.data').exec(function(err, developer) {
       if (err) return callback(err);
 
-      console.log("Error in getDataById: " + err + " developer: " + developer);
-
       if (!developer) {
         return callback(new HttpError(404, "Developer not found"));
       }
@@ -132,29 +135,32 @@ exports = module.exports = function(app, mongoose) {
 
   };
 
-  // developerSchema.statics.updateDataById = function(id, lang, newDeveloperData, callback) {
-  //   var Developer = this;
+  developerSchema.statics.updateDataById = function(id, lang, newDeveloperData, callback) {
+    var Developer = this;
 
-  //   Developer.findById(id).populate('name.data').populate('position.data').populate('info.data').exec(function(err, developer) {
-  //     if (err) return callback(err);
+    Developer.findById(id)
+      .populate('name.data')
+      .populate('position.data')
+      .populate('info.data')
+      .exec(function(err, developer) {
+        if (err) return callback(err);
 
-  //     console.log("Error in getDataById: " + err + " developer: " + developer);
+        if (!developer) {
+          return callback(new HttpError(404, "Developer not found"));
+        }
 
-  //     if (!developer) {
-  //       return callback(new HttpError(404, "Developer not found"));
-  //     }
+        developer.name.data.updateTranslatedField(lang, newDeveloperData.name);
+        developer.position.data.updateTranslatedField(lang, newDeveloperData.position);
+        developer.info.data.updateTranslatedField(lang, newDeveloperData.info);
+        developer.imagePath.data = newDeveloperData.imagePath;
 
-  //     var developerData = {};
-  //     developerData.name = translateField(developer.name.data.translation, lang);
-  //     developerData.position = translateField(developer.position.data.translation, lang);
-  //     developerData.info =  translateField(developer.info.data.translation, lang);
-  //     developerData.imagePath = developer.imagePath.data;
+        developer.save(function(err) {
+          if (err) return callback(err);
+          return callback(null, developer);
+        });
 
-  //     return callback(null, developerData);
-
-  //   });
-  // });
-
+      });
+  };
 
   app.db.model('Developer', developerSchema);
 };
