@@ -3,24 +3,14 @@
 var HttpError = require('error').HttpError;
 
 function translateField(field, lang) {
-  return field.find(function(element) {
+  var translation = field.find(function(element) {
     return element.language === lang;
-  }).text;
-}
+  });
 
-function updateTranslatedField(field, lang, newValue) {
-  if (!field) return;
-
-  for (var index = 0; index < field.length; index++) {
-    if (field.language == lang) {
-      field.text = newValue;
-      return;
-    }
+  console.log("Translation, lang: " + lang + " = :" + translation);
+  if (translation) {
+    return translation.text;
   }
-
-  field.find(function(element) {
-    return element.language === lang;
-  }).text;
 }
 
 exports = module.exports = function(app, mongoose) {
@@ -137,6 +127,8 @@ exports = module.exports = function(app, mongoose) {
 
   developerSchema.statics.updateDataById = function(id, lang, newDeveloperData, callback) {
     var Developer = this;
+
+    console.log("We in update data by id");
 
     Developer.findById(id)
       .populate('name.data')

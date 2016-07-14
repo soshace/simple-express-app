@@ -8,13 +8,21 @@ exports = module.exports = function(app, mongoose) {
 
   translationSchema.methods.updateTranslatedField = function(lang, newValue) {
     var field = this;
+    var fieldUpdate = false;
     for (var index = 0; index < field.translation.length; index++) {
       if (field.translation[index].language == lang) {
         field.translation[index].text = newValue;
-        field.save();
-        return;
+        fieldUpdate = true;
+        break;
       }
     }
+    if (fieldUpdate) {
+        field.save();
+        return;
+    }
+
+    field.translation.push({language: lang, text: newValue});
+    field.save();
   };
 
   app.db.model('Translation', translationSchema);
