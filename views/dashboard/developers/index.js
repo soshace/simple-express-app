@@ -2,7 +2,6 @@
 
 var lang = 'en';
 
-
 var HttpError = require('error').HttpError;
 
 exports.init = function(req, res, next) {
