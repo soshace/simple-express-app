@@ -30,6 +30,24 @@
 
 <div class="row">
 
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Developer List</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each developers as |developer|}}
+        <tr class="model-element">
+          <td class="danger delete-control"><a href=""><span class="glyphicon glyphicon-trash delete-trash" aria-hidden="true"></span></a></td>
+          <td>
+            <a href="{{{developer.href}}}" class="delete-href">{{{developer.name}}}</a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
   <p>
   {{#if developers}}
     <div class="developers-list list-goup">

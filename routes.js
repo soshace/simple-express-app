@@ -31,5 +31,6 @@ exports = module.exports = function(app) {
   app.post('/dashboard/developers', require('./views/dashboard/developers/index').save);
   app.get('/dashboard/developers/:id', checkAuth, require('./views/dashboard/developers/index').getById);
   app.post('/dashboard/developers/:id', require('./views/dashboard/developers/index').updateById);
+  app.delete('/dashboard/developers/:id', require('./views/dashboard/developers/index').deleteById);
 
 };

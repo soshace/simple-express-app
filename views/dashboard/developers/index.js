@@ -76,3 +76,12 @@ exports.updateById = function(req, res, next) {
     res.redirect('/dashboard/developers/');
   });
 };
+
+exports.deleteById = function(req, res, next) {
+  var Developer = req.app.db.models.Developer;
+  console.log("We receive DELETE request!");
+  Developer.findByIdAndRemove(req.params.id, function(err)  {
+    res.redirect('/dashboard/developers/');
+
+  });
+};

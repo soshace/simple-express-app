@@ -104,3 +104,8 @@ body {
   border-radius: 50%;
 }
 
+.delete-control {
+  padding: 7px;
+  text-align: center;
+  width: 18px;
+}
