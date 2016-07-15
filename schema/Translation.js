@@ -6,6 +6,17 @@ exports = module.exports = function(app, mongoose) {
     translation: [ {language: String, text: String} ]
   });
 
+  translationSchema.methods.translateField = function(lang) {
+    var field = this.translation;
+    var translation = field.find(function(element) {
+      return element.language === lang;
+    });
+
+    if (translation) {
+      return translation.text;
+    }
+  };
+
   translationSchema.methods.updateTranslatedField = function(lang, newValue) {
     var field = this;
     var fieldUpdate = false;

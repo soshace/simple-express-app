@@ -2,17 +2,6 @@
 
 var HttpError = require('error').HttpError;
 
-function translateField(field, lang) {
-  var translation = field.find(function(element) {
-    return element.language === lang;
-  });
-
-  // console.log("Translation, lang: " + lang + " = :" + translation);
-  if (translation) {
-    return translation.text;
-  }
-}
-
 exports = module.exports = function(app, mongoose) {
   var developerSchema = new mongoose.Schema({
     name: {
@@ -66,9 +55,9 @@ exports = module.exports = function(app, mongoose) {
         var developer = developers[index];
 
         var developerData = {};
-        developerData.name = translateField(developer.name.data.translation, lang);
-        developerData.position = translateField(developer.position.data.translation, lang);
-        developerData.info =  translateField(developer.info.data.translation, lang);
+        developerData.name = developer.name.data.translateField(lang);
+        developerData.position = developer.position.data.translateField(lang);
+        developerData.info =  developer.info.data.translateField(lang);
 
         developersDict.push(developerData);
       }
@@ -93,7 +82,7 @@ exports = module.exports = function(app, mongoose) {
         var developer = developers[index];
 
         var developerData = {};
-        developerData.name = translateField(developer.name.data.translation, lang);
+        developerData.name = developer.name.data.translateField(lang);
         developerData.id = developer._id;
 
         developersDict.push(developerData);
@@ -114,9 +103,9 @@ exports = module.exports = function(app, mongoose) {
       }
 
       var developerData = {};
-      developerData.name = translateField(developer.name.data.translation, lang);
-      developerData.position = translateField(developer.position.data.translation, lang);
-      developerData.info =  translateField(developer.info.data.translation, lang);
+      developerData.name = developer.name.data.translateField(lang);
+      developerData.position = developer.position.data.translateField(lang);
+      developerData.info =  developer.info.data.translateField(lang);
       developerData.imagePath = developer.imagePath.data;
 
       return callback(null, developerData);
@@ -138,6 +127,7 @@ exports = module.exports = function(app, mongoose) {
         if (!developer) {
           return callback(new HttpError(404, "Developer not found"));
         }
+
 
         developer.name.data.updateTranslatedField(lang, newDeveloperData.name);
         developer.position.data.updateTranslatedField(lang, newDeveloperData.position);
