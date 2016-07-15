@@ -1,12 +1,12 @@
 'use strict';
 
-var lang = 'en';
+var language = require('config').language.cookiesVariable;
 
 var HttpError = require('error').HttpError;
 
 exports.init = function(req, res, next) {
   var Developer = req.app.db.models.Developer;
-  Developer.getAllNamesIds(req.cookies.locale, function(err, developers) {
+  Developer.getAllNamesIds(req.cookies[language], function(err, developers) {
     if (err) return next(err);
     for (var index = 0; index < developers.length; index++) {
       developers[index].href = '/dashboard/developers/' + developers[index].id;
@@ -21,7 +21,7 @@ exports.init = function(req, res, next) {
 
 exports.getById = function(req, res, next) {
   var Developer = req.app.db.models.Developer;
-  Developer.getDataById(req.params.id, req.cookies.locale, function(err, developer) {
+  Developer.getDataById(req.params.id, req.cookies[language], function(err, developer) {
     if (err) return next(err);
     res.render('./dashboard/developers/member/index', {
       layout: 'dashboard',
@@ -33,6 +33,7 @@ exports.getById = function(req, res, next) {
 exports.save = function(req, res, next) {
   var db = req.app.db;
   var Developer = db.model('Developer');
+  var lang = req.cookies[language];
 
   var Translation = db.model('Translation');
   var name = new Translation();
@@ -70,7 +71,7 @@ exports.updateById = function(req, res, next) {
     info: req.body.info,
     imagePath: req.body.imagePath
   };
-  Developer.updateDataById(req.params.id, req.cookies.locale, newDeveloperData, function(err, developer) {
+  Developer.updateDataById(req.params.id, req.cookies[language], newDeveloperData, function(err, developer) {
     if (err) return next(err);
     res.redirect('/dashboard/developers/');
   });
