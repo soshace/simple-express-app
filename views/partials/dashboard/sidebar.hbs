@@ -1,4 +1,6 @@
 <ul class="nav nav-sidebar">
   <li class="active"><a href="#">List of Models<span class="sr-only">(current)</span></a></li>
-  <li><a href="/dashboard/developers">Developers</a></li>
+  {{#each viewModels as |model|}}
+    <li><a href="{{{model.url}}}">{{{model.name}}}</a></li>
+  {{/each}}
 </ul>

@@ -6,7 +6,6 @@ var checkAuth = require('middleware/checkAuth');
 exports = module.exports = function(app) {
 
   app.use(function(req, res, next) {
-    console.log("Coockies: ", req.cookies);
     next();
   });
 

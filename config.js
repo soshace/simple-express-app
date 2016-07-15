@@ -18,6 +18,24 @@ exports.language = {
   default: 'en',
   support: ['en', 'ru'],
   cookiesVariable: 'locale'
+};
 
+exports.viewModels = {
+  Developer: {
+    show: true,
+    name: 'Developers',
+  },
+  Project: {
+    show: false,
+    name: 'Projects'
+  },
+  Service: {
+    show: false,
+    name: 'Services'
+  }
+};
+
+exports.dashboard = {
+  url: '/dashboard'
 };
 
