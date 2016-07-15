@@ -14,3 +14,10 @@ exports.session = {
   },
 };
 
+exports.language = {
+  default: 'en',
+  support: ['en', 'ru'],
+  cookiesVariable: 'locale'
+
+};
+

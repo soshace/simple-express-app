@@ -53,6 +53,7 @@ app.use(passport.session());
 require('./config/passport')(app, passport);
 app.use(require('./middleware/sendHttpError'));
 app.use(require('./middleware/loadUser'));
+// app.use(require('./middleware/detectLang'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

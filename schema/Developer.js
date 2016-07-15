@@ -7,7 +7,7 @@ function translateField(field, lang) {
     return element.language === lang;
   });
 
-  console.log("Translation, lang: " + lang + " = :" + translation);
+  // console.log("Translation, lang: " + lang + " = :" + translation);
   if (translation) {
     return translation.text;
   }
@@ -127,8 +127,6 @@ exports = module.exports = function(app, mongoose) {
 
   developerSchema.statics.updateDataById = function(id, lang, newDeveloperData, callback) {
     var Developer = this;
-
-    console.log("We in update data by id");
 
     Developer.findById(id)
       .populate('name.data')

@@ -14,20 +14,18 @@
     console.log(document.cookie);
     var lang = getCookie(COOKIE_NAME);
 
-    if (lang === 'en' || lang === 'ru') {
-      langSelect.value = lang;
-    } else {
-      setLang('en');
+    if (lang !== 'en' && lang !== 'ru') {
+      lang = 'en';
+      setCookie(COOKIE_NAME, lang, {path: '/'});
     }
-  }
 
-  function setLang(lang) {
-    langSelect.value = lang;
-    setCookie(COOKIE_NAME, lang, {path: '/'});
+    if (langSelect.value != lang) {
+      langSelect.value = lang;
+    }
+
   }
 
   function setCookieLang() {
-    console.log("Set cookie: " + langSelect.value);
     setCookie(COOKIE_NAME, langSelect.value, {path: '/'});
     console.log(document.cookie);
   }
