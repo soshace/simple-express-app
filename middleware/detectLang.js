@@ -8,7 +8,7 @@ module.exports = function (req, res, next) {
 
     // detect if language supports by server settings
     lang = ~language.support.indexOf(lang) ? lang : language.default;
-    res.cookies(language.cookiesVariable, lang);
+    res.cookie(language.cookiesVariable, lang);
   }
 
   next();
