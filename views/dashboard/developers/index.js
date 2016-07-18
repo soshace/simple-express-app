@@ -1,5 +1,7 @@
 'use strict';
 
+var sleep = require('sleep');
+
 var language = require('config').language.cookiesVariable;
 
 var HttpError = require('error').HttpError;
@@ -81,7 +83,11 @@ exports.deleteById = function(req, res, next) {
   var Developer = req.app.db.models.Developer;
   console.log("We receive DELETE request!");
   Developer.findByIdAndRemove(req.params.id, function(err)  {
-    res.redirect('/dashboard/developers/');
+    if (err) {
+      res.status(404).end();
+    } else {
+      res.status(200).end();
+    }
 
   });
 };

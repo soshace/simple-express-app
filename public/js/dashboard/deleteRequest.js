@@ -10,20 +10,34 @@
       var trash = model.querySelector('.delete-trash');
 
       var deleteHref = model.querySelector('.delete-href').href;
+      console.log("model: %s", model);
 
-      trash.addEventListener('click', (function(url) {
+      trash.addEventListener('click', (function(rootObject, url) {
         return function(event) {
-          deleteRequest(url);
+          event.preventDefault();
+          deleteRequest(rootObject, url);
         }
-      })(deleteHref));
+      })(model, deleteHref));
     }
   });
 
+  function deleteRequest(rootElement, url) {
 
-  function deleteRequest(url) {
+    rootElement.classList.add("danger", "link-not-active");
+
     var request = new XMLHttpRequest();
 
     request.open('DELETE', url, true);
+    request.onreadystatechange = function() {
+      if (request.readyState == 4) {
+        if (request.status == 200) {
+          rootElement.style.display = "none";
+        } else {
+          rootElement.classList.remove("danger", "link-not-active");
+        }
+      }
+    };
     request.send();
   }
+
 }());

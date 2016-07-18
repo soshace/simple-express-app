@@ -109,3 +109,8 @@ body {
   text-align: center;
   width: 18px;
 }
+
+.link-not-active {
+  pointer-events: none;
+  cursor: default;
+}

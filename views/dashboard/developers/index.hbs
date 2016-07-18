@@ -30,16 +30,17 @@
 
 <div class="row">
 
-  <table class="table table-condensed">
+  <table class="table table-hover">
     <thead>
       <tr>
-        <th>Developer List</th>
+        <th>Delete</th>
+        <th>Name</th>
       </tr>
     </thead>
     <tbody>
       {{#each developers as |developer|}}
         <tr class="model-element">
-          <td class="danger delete-control"><a href=""><span class="glyphicon glyphicon-trash delete-trash" aria-hidden="true"></span></a></td>
+          <td class="delete-control"><a href=""><span class="glyphicon glyphicon-trash delete-trash" aria-hidden="true"></span></a></td>
           <td>
             <a href="{{{developer.href}}}" class="delete-href">{{{developer.name}}}</a>
           </td>
