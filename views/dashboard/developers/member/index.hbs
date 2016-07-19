@@ -8,7 +8,7 @@
 <p>
 <div id="later-information-form" class="row collapse out">
   {{#if developer}}
-    <form action="" method="POST">
+    <form id="developerStoreForm" action="" method="POST">
       <fieldset class="form-group">
         <legend class="bg-warning">Saved for later information</legend>
         {{#each developer}}
@@ -19,7 +19,7 @@
           <!-- {{@key}}: {{this}} -->
         {{/each}}
       </fieldset>
-      <button type="Update" class="btn btn-warning">Save for later</button>
+      <button type="button" fomr  class="btn btn-warning">Save for later</button>
       <button type="Update" class="btn btn-success">Submit</button>
     </form>
   {{/if}}
@@ -27,7 +27,7 @@
 
 <div class="row">
   {{#if developer}}
-    <form action="" method="POST">
+    <form id="developer action="" method="POST">
       <fieldset class="form-group">
         <legend class="bg-success">Published information</legend>
         {{#each developer}}

@@ -31,7 +31,9 @@ exports = module.exports = function(app, mongoose) {
         tagType: {type: String, default: "input"},
         tagAttributeType: {type: String, default: "file"}
       }
-    }
+    },
+    public: {type: Boolean, default: true},
+    storage: {type :mongoose.Schema.Types.ObjectId, ref: 'Developer'}
   });
 
   developerSchema.statics.getAllLikeDict = function(lang, callback) {
@@ -69,7 +71,12 @@ exports = module.exports = function(app, mongoose) {
   developerSchema.statics.getAllNamesIds = function(lang, callback) {
     var Developer = this;
 
-    Developer.find({}).populate('name.data').exec(function(err, developers) {
+    // public not true
+    var queryOptions = {
+      public: {$ne: true}
+    };
+
+    Developer.find(queryOptions).populate('name.data').exec(function(err, developers) {
       if (err) return callback(err);
 
       if (!developers) {

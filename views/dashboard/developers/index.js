@@ -34,35 +34,50 @@ exports.getById = function(req, res, next) {
 
 exports.save = function(req, res, next) {
   var db = req.app.db;
-  var Developer = db.model('Developer');
   var lang = req.cookies[language];
 
-  var Translation = db.model('Translation');
-  var name = new Translation();
-  name.name = 'name';
-  name.translation.push({language: lang, text: req.body.name});
-  name.save();
+  var publicDeveloper = createDeveloper(db, lang);
+  var storageDeveloper = createDeveloper(db, lang);
 
-  var position = new Translation();
-  position.name = 'position';
-  position.translation.push({language: lang, text: req.body.position});
-  position.save();
+  publicDeveloper.storage = storageDeveloper._id;
+  storageDeveloper.public = false;
 
-  var info = new Translation();
-  info.name = 'info';
-  info.translation.push({language: lang, text: req.body.info});
-  info.save();
-
-  var newDeveloper = new Developer();
-  newDeveloper.name.data = name._id;
-  newDeveloper.imagePath.data = req.body.imagePath;
-  newDeveloper.position.data = position._id;
-  newDeveloper.info.data = info._id;
   // console.log(newDeveloper);
-  newDeveloper.save(function(err) {
+  storageDeveloper.save(function(err) {
     if (err) console.log(err);
+
+    publicDeveloper.save(function(err) {
+      if (err) console.log(err);
+    });
   });
+
   res.redirect('/dashboard/developers/');
+
+  function createDeveloper(db, lang) {
+    var Developer = db.model('Developer');
+    var Translation = db.model('Translation');
+    var name = new Translation();
+    name.name = 'name';
+    name.translation.push({language: lang, text: req.body.name});
+    name.save();
+
+    var position = new Translation();
+    position.name = 'position';
+    position.translation.push({language: lang, text: req.body.position});
+    position.save();
+
+    var info = new Translation();
+    info.name = 'info';
+    info.translation.push({language: lang, text: req.body.info});
+    info.save();
+
+    var newDeveloper = new Developer();
+    newDeveloper.name.data = name._id;
+    newDeveloper.imagePath.data = req.body.imagePath;
+    newDeveloper.position.data = position._id;
+    newDeveloper.info.data = info._id;
+    return newDeveloper;
+  }
 };
 
 exports.updateById = function(req, res, next) {
