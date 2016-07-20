@@ -86,12 +86,27 @@ exports.updateById = function(req, res, next) {
     name: req.body.name,
     position: req.body.position,
     info: req.body.info,
-    imagePath: req.body.imagePath
+    imagePath: req.body.imagePath,
+    savePlace: req.body.formId
   };
-  Developer.updateDataById(req.params.id, req.cookies[language], newDeveloperData, function(err, developer) {
-    if (err) return next(err);
-    res.redirect('/dashboard/developers/');
-  });
+
+  if (req.body.formId === 'storage') {
+    // search developer and his storage id
+    Developer.findById(req.params.id).populate('storage').exec(function(err, developer) {
+      if (err) return next(err);
+      console.log("Storage: %s", developer.storage);
+      console.log("Developer public: %s", developer.public);
+      Developer.updateDataById(developer.storage._id, req.cookies[language], newDeveloperData, function(err, developer) {
+        if (err) return next(err);
+        res.redirect('/dashboard/developers/');
+      });
+    });
+  } else {
+    Developer.updateDataById(req.params.id, req.cookies[language], newDeveloperData, function(err, developer) {
+      if (err) return next(err);
+      res.redirect('/dashboard/developers/');
+    });
+  }
 };
 
 exports.deleteById = function(req, res, next) {

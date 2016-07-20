@@ -1,17 +1,17 @@
 <h1>Developer</h1>
 <p>
   <div class="row">
-    <button class="btn btn-warning pull-right" type="button" data-toggle="collapse" data-target="#later-information-form">Show later saved information</button>
+    <button class="btn btn-warning pull-right" type="button" data-toggle="collapse" data-target="#developerStoreForm">Show later saved information</button>
   </div>
 </p>
 
 <p>
-  <div class="row collapse out">
-    {{#if developer}}
-      <form id="developerStoreForm" action="" method="POST">
+  <div id="developerStoreForm" class="row collapse out">
+    {{#if developer.storage}}
+      <form action="" method="POST">
         <fieldset class="form-group">
-          <legend class="bg-warning">Saved for later information</legend>
-          {{#each developer}}
+          <legend class="bg-warning">Stored data</legend>
+          {{#each developer.storage}}
             <div class="form-group">
               <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
               <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
@@ -19,8 +19,8 @@
             <!-- {{@key}}: {{this}} -->
           {{/each}}
         </fieldset>
-        <button type="button" class="btn btn-warning">Save to store</button>
-        <button type="button" class="btn btn-success">Publish</button>
+        <button type="button" class="btn btn-warning storage-button">Save to storage</button>
+        <button type="button" class="btn btn-success publish-button">Publish</button>
       </form>
     {{/if}}
   </div>
@@ -39,8 +39,8 @@
           <!-- {{@key}}: {{this}} -->
         {{/each}}
       </fieldset>
-      <button type="button" class="btn btn-warning">Save to store</button>
-      <button type="button" class="btn btn-success">Publish</button>
+      <button type="button" class="btn btn-warning storage-button">Save to storage</button>
+      <button type="button" class="btn btn-success publish-button">Publish</button>
     </form>
   {{/if}}
 </div>

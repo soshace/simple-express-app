@@ -73,7 +73,7 @@ exports = module.exports = function(app, mongoose) {
 
     // public not true
     var queryOptions = {
-      public: {$ne: true}
+      public: {$ne: false}
     };
 
     Developer.find(queryOptions).populate('name.data').exec(function(err, developers) {
@@ -102,7 +102,7 @@ exports = module.exports = function(app, mongoose) {
   developerSchema.statics.getDataById = function(id, lang, callback) {
     var Developer = this;
 
-    Developer.findById(id).populate('name.data').populate('position.data').populate('info.data').exec(function(err, developer) {
+    Developer.findById(id).populate('name.data').populate('position.data').populate('info.data').populate('storage').exec(function(err, developer) {
       if (err) return callback(err);
 
       if (!developer) {
@@ -115,7 +115,24 @@ exports = module.exports = function(app, mongoose) {
       developerData.info =  developer.info.data.translateField(lang);
       developerData.imagePath = developer.imagePath.data;
 
-      return callback(null, developerData);
+      if (developer.storage) {
+        Developer.findById(developer.storage._id).populate('name.data').populate('position.data').populate('info.data').populate('storage').exec(function(err, developerStorage) {
+          if (err) return callback(err);
+
+          if (!developerStorage) {
+            return callback(new HttpError(404, "Developer storage not found"));
+          }
+          developerData.storage = {};
+          developerData.storage.name = developerStorage.name.data.translateField(lang);
+          developerData.storage.position = developerStorage.position.data.translateField(lang);
+          developerData.storage.info =  developerStorage.info.data.translateField(lang);
+          developerData.storage.imagePath = developerStorage.imagePath.data;
+
+          return callback(null, developerData);
+        });
+      } else {
+        return callback(null, developerData);
+      }
 
     });
 
