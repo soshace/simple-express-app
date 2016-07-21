@@ -1,5 +1,7 @@
 'use strict';
 
+var async = require('async');
+
 var HttpError = require('error').HttpError;
 
 exports = module.exports = function(app, mongoose) {
@@ -102,9 +104,25 @@ exports = module.exports = function(app, mongoose) {
   developerSchema.statics.getDataById = function(id, lang, callback) {
     var Developer = this;
 
-    Developer.findById(id).populate('name.data').populate('position.data').populate('info.data').populate('storage').exec(function(err, developer) {
+    async.waterfall([
+      findDeveloper,
+      getDeveloperValues,
+      findDeveloperStorage,
+      getDeveloperStorageValues
+    ], function(err, developerData) {
       if (err) return callback(err);
+      return callback(null, developerData);
+    });
 
+    function findDeveloper(callback) {
+      Developer.findById(id).populate('name.data')
+        .populate('position.data')
+        .populate('info.data')
+        .populate('storage')
+        .exec(callback);
+    }
+
+    function getDeveloperValues(developer, callback) {
       if (!developer) {
         return callback(new HttpError(404, "Developer not found"));
       }
@@ -114,28 +132,43 @@ exports = module.exports = function(app, mongoose) {
       developerData.position = developer.position.data.translateField(lang);
       developerData.info =  developer.info.data.translateField(lang);
       developerData.imagePath = developer.imagePath.data;
-
       if (developer.storage) {
-        Developer.findById(developer.storage._id).populate('name.data').populate('position.data').populate('info.data').populate('storage').exec(function(err, developerStorage) {
-          if (err) return callback(err);
+        var storageId = developer.storage._id;
+      }
 
-          if (!developerStorage) {
-            return callback(new HttpError(404, "Developer storage not found"));
-          }
+      callback(null, storageId, developerData);
+    }
+
+    function findDeveloperStorage(storageId, developerData, callback) {
+      if (!storageId) {
+        callback(null, developerData);
+      }
+
+      Developer.findById(storageId)
+        .populate('name.data')
+        .populate('position.data')
+        .populate('info.data')
+        .populate('storage')
+        .exec(function(err, developerStorage) {
+          callback(err, developerStorage, developerData);
+        });
+    }
+
+    function getDeveloperStorageValues(developerStorage, developerData, callback) {
+        if (!developerStorage) {
+          return callback(new HttpError(404, "Developer storage not found"));
+        }
+
+        if (developerStorage) {
           developerData.storage = {};
           developerData.storage.name = developerStorage.name.data.translateField(lang);
           developerData.storage.position = developerStorage.position.data.translateField(lang);
           developerData.storage.info =  developerStorage.info.data.translateField(lang);
           developerData.storage.imagePath = developerStorage.imagePath.data;
+        }
 
-          return callback(null, developerData);
-        });
-      } else {
         return callback(null, developerData);
-      }
-
-    });
-
+    }
   };
 
   developerSchema.statics.updateDataById = function(id, lang, newDeveloperData, callback) {
