@@ -1,46 +1,81 @@
 <h1>Developer</h1>
-<p>
+
+{{#if developer.storage}}
+  <p>
   <div class="row">
     <button class="btn btn-warning pull-right" type="button" data-toggle="collapse" data-target="#developerStoreForm">Show later saved information</button>
   </div>
-</p>
+  </p>
 
-<p>
+  <p>
   <div id="developerStoreForm" class="row collapse out">
-    {{#if developer.storage}}
-      <form action="" method="POST">
-        <fieldset class="form-group">
-          <legend class="bg-warning">Stored data</legend>
-          {{#each developer.storage}}
-            <div class="form-group">
-              <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
-              <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
-            </div>
-            <!-- {{@key}}: {{this}} -->
-          {{/each}}
-        </fieldset>
-        <button type="button" class="btn btn-warning storage-button">Save to storage</button>
-        <button type="button" class="btn btn-success publish-button">Publish</button>
-      </form>
-    {{/if}}
-  </div>
-</p>
-
-<div class="row">
-  {{#if developer}}
     <form action="" method="POST">
       <fieldset class="form-group">
-        <legend class="bg-success">Published information</legend>
-        {{#each developer}}
+        <legend class="bg-warning">Stored data</legend>
+        {{#if developer.storage.name}}
           <div class="form-group">
-            <label class="text-capitalize" for="{{@key}}">{{@key}}</label>
-            <input class="form-control" name="{{@key}}" id="{{@key}}" type="text" value="{{this}}">
+            <label class="text-capitalize" for="name">Name</label>
+            <input class="form-control" name="name" id="name" type="text" value="{{developer.storage.name}}">
           </div>
-          <!-- {{@key}}: {{this}} -->
-        {{/each}}
+        {{/if}}
+        {{#if developer.storage.position}}
+          <div class="form-group">
+            <label class="text-capitalize" for="position">Postion</label>
+            <input class="form-control" name="position" id="position" type="text" value="{{developer.storage.position}}">
+          </div>
+        {{/if}}
+        {{#if developer.storage.info}}
+          <div class="form-group">
+            <label class="text-capitalize" for="info">Info</label>
+            <input class="form-control" name="info" id="info" type="text" value="{{developer.storage.info}}">
+          </div>
+        {{/if}}
+        {{#if developer.storage.imagePath}}
+          <div class="form-group">
+            <label class="text-capitalize" for="imagePath">Photo</label>
+            <input class="form-control" name="imagePath" id="imagePath" type="text" value="{{developer.storage.imagePath}}">
+          </div>
+        {{/if}}
       </fieldset>
       <button type="button" class="btn btn-warning storage-button">Save to storage</button>
       <button type="button" class="btn btn-success publish-button">Publish</button>
     </form>
-  {{/if}}
-</div>
+  </div>
+  </p>
+{{/if}}
+
+{{#if developer}}
+  <div class="row">
+    <form action="" method="POST">
+      <fieldset class="form-group">
+        <legend class="bg-success">Published information</legend>
+        {{#if developer.name}}
+          <div class="form-group">
+            <label class="text-capitalize" for="name">Name</label>
+            <input class="form-control" name="name" id="name" type="text" value="{{developer.name}}">
+          </div>
+        {{/if}}
+        {{#if developer.position}}
+          <div class="form-group">
+            <label class="text-capitalize" for="position">Postion</label>
+            <input class="form-control" name="position" id="position" type="text" value="{{developer.position}}">
+          </div>
+        {{/if}}
+        {{#if developer.info}}
+          <div class="form-group">
+            <label class="text-capitalize" for="info">Info</label>
+            <input class="form-control" name="info" id="info" type="text" value="{{developer.info}}">
+          </div>
+        {{/if}}
+        {{#if developer.imagePath}}
+          <div class="form-group">
+            <label class="text-capitalize" for="imagePath">Photo</label>
+            <input class="form-control" name="imagePath" id="imagePath" type="text" value="{{developer.imagePath}}">
+          </div>
+        {{/if}}
+      </fieldset>
+      <button type="button" class="btn btn-warning storage-button">Save to storage</button>
+      <button type="button" class="btn btn-success publish-button">Publish</button>
+    </form>
+  </div>
+{{/if}}
