@@ -90,23 +90,16 @@ exports.updateById = function(req, res, next) {
     savePlace: req.body.formId
   };
 
-  if (req.body.formId === 'storage') {
-    // search developer and his storage id
-    Developer.findById(req.params.id).populate('storage').exec(function(err, developer) {
+  console.log("savePlace: %s", newDeveloperData.savePlace);
+  Developer.updateById(req.params.id,
+    req.cookies[language],
+    newDeveloperData,
+    function(err, developer) {
       if (err) return next(err);
-      console.log("Storage: %s", developer.storage);
-      console.log("Developer public: %s", developer.public);
-      Developer.updateDataById(developer.storage._id, req.cookies[language], newDeveloperData, function(err, developer) {
-        if (err) return next(err);
-        res.redirect('/dashboard/developers/');
-      });
-    });
-  } else {
-    Developer.updateDataById(req.params.id, req.cookies[language], newDeveloperData, function(err, developer) {
-      if (err) return next(err);
-      res.redirect('/dashboard/developers/');
-    });
-  }
+      // need to send flash messages
+      res.status(200).end();
+    }
+  );
 };
 
 exports.deleteById = function(req, res, next) {

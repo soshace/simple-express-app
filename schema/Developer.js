@@ -141,7 +141,7 @@ exports = module.exports = function(app, mongoose) {
 
     function findDeveloperStorage(storageId, developerData, callback) {
       if (!storageId) {
-        callback(null, developerData);
+        callback(null, null, developerData);
       }
 
       Developer.findById(storageId)
@@ -168,6 +168,60 @@ exports = module.exports = function(app, mongoose) {
         }
 
         return callback(null, developerData);
+    }
+  };
+
+  developerSchema.statics.updateById = function(id, lang, newDeveloperData, callback) {
+    var Developer = this;
+
+    async.waterfall([
+      findDeveloper,
+      findDeveloperStorage,
+      updateDeveloper,
+    ], function(err, developer) {
+      if (err) return callback(err);
+      return callback(null, developer);
+    });
+
+    function findDeveloper(callback) {
+      Developer.findById(id).populate('name.data')
+        .populate('position.data')
+        .populate('info.data')
+        .populate('storage')
+        .exec(callback);
+    }
+
+    function findDeveloperStorage(developer, callback) {
+      if (!developer) {
+        return callback(new HttpError(404, "Developer not found"));
+      }
+
+      if (newDeveloperData.savePlace === 'storage' && developer.storage) {
+        var storageId = developer.storage._id;
+        Developer.findById(storageId).populate('name.data')
+          .populate('position.data')
+          .populate('info.data')
+          .populate('storage')
+          .exec(callback);
+      } else {
+        callback(null, developer);
+      }
+    }
+
+    function updateDeveloper(developer, callback) {
+      if (!developer) {
+        return callback(new HttpError(404, "Developer not found"));
+      }
+
+      developer.name.data.updateTranslatedField(lang, newDeveloperData.name);
+      developer.position.data.updateTranslatedField(lang, newDeveloperData.position);
+      developer.info.data.updateTranslatedField(lang, newDeveloperData.info);
+      developer.imagePath.data = newDeveloperData.imagePath;
+
+      developer.save(function(err) {
+        if (err) return callback(err);
+        return callback(null, developer);
+      });
     }
   };
 
@@ -198,6 +252,7 @@ exports = module.exports = function(app, mongoose) {
 
       });
   };
+
 
   app.db.model('Developer', developerSchema);
 };
