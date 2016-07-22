@@ -6,6 +6,7 @@ var checkAuth = require('middleware/checkAuth');
 exports = module.exports = function(app) {
 
   app.use(function(req, res, next) {
+    // console.log("We receive some request");
     next();
   });
 
@@ -32,5 +33,7 @@ exports = module.exports = function(app) {
   app.get('/dashboard/developers/:id', checkAuth, require('./views/dashboard/developers/index').getById);
   app.post('/dashboard/developers/:id', require('./views/dashboard/developers/index').updateById);
   app.delete('/dashboard/developers/:id', require('./views/dashboard/developers/index').deleteById);
+
+  app.post('/dashboard/uploadfile', require('./views/dashboard/uploadfile').upload);
 
 };

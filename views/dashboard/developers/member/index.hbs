@@ -46,68 +46,100 @@
 
 {{#if developer}}
   <div class="row">
-    <form action="" method="POST">
-      <fieldset class="form-group">
-        <legend class="bg-success">Published information</legend>
-        {{#if developer.name}}
-          <div class="form-group">
-            <label class="text-capitalize" for="name">Name</label>
-            <input class="form-control" name="name" id="name" type="text" value="{{developer.name}}">
-          </div>
-        {{/if}}
-        {{#if developer.position}}
-          <div class="form-group">
-            <label class="text-capitalize" for="position">Postion</label>
-            <input class="form-control" name="position" id="position" type="text" value="{{developer.position}}">
-          </div>
-        {{/if}}
-        {{#if developer.info}}
-          <div class="form-group">
-            <label class="text-capitalize" for="info">Info</label>
-            <input class="form-control" name="info" id="info" type="text" value="{{developer.info}}">
-          </div>
-        {{/if}}
-        {{#if developer.imagePath}}
-          <div class="form-group">
-            <div id="previews" class="dropzone-preview"></div>
-            <div class="dropzone-f"></div>
-            <button type="button" class="btn btn-warning fileinput-button">Save to storage</button>
-          </div>
-        {{/if}}
-      </fieldset>
-      <button type="button" class="btn btn-warning storage-button">Save to storage</button>
-      <button type="button" class="btn btn-success publish-button">Publish</button>
-    </form>
+
+    <div class="container">
+      <form action="" method="POST">
+        <fieldset class="form-group">
+          <legend class="bg-success">Published information</legend>
+          {{#if developer.name}}
+            <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="text-capitalize" for="name">Name</label>
+                <input class="form-control" name="name" id="name" type="text" value="{{developer.name}}">
+              </div>
+            </div>
+            </div>
+          {{/if}}
+          {{#if developer.position}}
+            <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="text-capitalize" for="position">Postion</label>
+                <input class="form-control" name="position" id="position" type="text" value="{{developer.position}}">
+              </div>
+            </div>
+            </div>
+          {{/if}}
+          {{#if developer.info}}
+            <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="text-capitalize" for="info">Info</label>
+                <input class="form-control" name="info" id="info" type="text" value="{{developer.info}}">
+              </div>
+            </div>
+            </div>
+          {{/if}}
+
+          {{#if developer.imagePath}}
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="text-capitalize">Photo</label>
+                  <p>
+                    <input class="form-control" name="imagePath" id="imagePath" type="text" value="{{developer.imagePath}}" disabled>
+                  </p>
+
+                  <div class="dropzone-mendrew">
+                    <div id="previews" class="dropzone-preview"></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group">
+                <div class="col-sm-4">
+                  <button type="button" class="btn btn-submit fileinput-button">Add file</button>
+                </div>
+                <div class="col-sm-4">
+                  <button type="button" class="btn btn-info image-upload" style="display: none;">Upload</button>
+                </div>
+              </div>
+            </div>
+          {{/if}}
+
+        </fieldset>
+        <button type="button" class="btn btn-warning storage-button">Save to storage</button>
+        <button type="button" class="btn btn-success publish-button">Publish</button>
+      </form>
+    </div>
+
   </div>
 {{/if}}
 
-<div id="dropzoneFileTemplate" class="file-row">
-  <!-- This is used as the file preview template -->
-  <div>
-    <span class="preview"><img data-dz-thumbnail /></span>
-  </div>
-  <div>
-    <p class="name" data-dz-name></p>
-    <strong class="error text-danger" data-dz-errormessage></strong>
-  </div>
-  <div>
-    <p class="size" data-dz-size></p>
-    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-      <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+<div id="preview-template" style="display: none;">
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-4">
+        <span class="preview"><img data-dz-thumbnail /></span>
+      </div>
+      <div class="col-md-4">
+        <p class="name" data-dz-name></p>
+        <strong class="error text-danger" data-dz-errormessage></strong>
+      </div>
+      <div class="col-md-2">
+        <p class="size" data-dz-size></p>
+        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+        </div>
+      </div>
     </div>
+
   </div>
-  <div>
-    <button class="btn btn-primary start">
-      <i class="glyphicon glyphicon-upload"></i>
-      <span>Start</span>
-    </button>
-    <button data-dz-remove class="btn btn-warning cancel">
-      <i class="glyphicon glyphicon-ban-circle"></i>
-      <span>Cancel</span>
-    </button>
-    <button data-dz-remove class="btn btn-danger delete">
-      <i class="glyphicon glyphicon-trash"></i>
-      <span>Delete</span>
-    </button>
-  </div>
+
 </div>
