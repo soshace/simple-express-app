@@ -90,7 +90,6 @@ exports.updateById = function(req, res, next) {
     savePlace: req.body.formId
   };
 
-  console.log("savePlace: %s", newDeveloperData.savePlace);
   Developer.updateById(req.params.id,
     req.cookies[language],
     newDeveloperData,

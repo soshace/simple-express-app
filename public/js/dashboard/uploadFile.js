@@ -8,11 +8,10 @@
       url: "/dashboard/uploadfile", // Set the url
       maxFiles: 1,
       thumbnailWidth: 120,
-      thumbnailHeight: 120,
+      thumbnailHeight: "90%",
       addRemoveLinks: true,
       parallelUploads: 1,
       previewTemplate: document.getElementById('preview-template').innerHTML,
-      // autoQueue: false, // Make sure the files aren't queued until manually added
       previewsContainer: "#previews", // Define the container to display the previews
       clickable: ".fileinput-button", // Define the element that should be used as click trigger to select files.
 
@@ -26,6 +25,12 @@
 
         this.on('reset', function() {
           uploadButton.style.display = 'none';
+        });
+
+        this.on('success', function(event, response) {
+          document.getElementById('imagePathPublish').value = response.uploadedFile;
+          var image = document.querySelector('.img-developer').src = response.uploadedFile;
+
         });
       },
     });

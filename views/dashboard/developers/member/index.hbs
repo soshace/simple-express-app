@@ -53,32 +53,32 @@
           <legend class="bg-success">Published information</legend>
           {{#if developer.name}}
             <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group">
-                <label class="text-capitalize" for="name">Name</label>
-                <input class="form-control" name="name" id="name" type="text" value="{{developer.name}}">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="text-capitalize" for="name">Name</label>
+                  <input class="form-control" name="name" id="name" type="text" value="{{developer.name}}">
+                </div>
               </div>
-            </div>
             </div>
           {{/if}}
           {{#if developer.position}}
             <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group">
-                <label class="text-capitalize" for="position">Postion</label>
-                <input class="form-control" name="position" id="position" type="text" value="{{developer.position}}">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="text-capitalize" for="position">Postion</label>
+                  <input class="form-control" name="position" id="position" type="text" value="{{developer.position}}">
+                </div>
               </div>
-            </div>
             </div>
           {{/if}}
           {{#if developer.info}}
             <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group">
-                <label class="text-capitalize" for="info">Info</label>
-                <input class="form-control" name="info" id="info" type="text" value="{{developer.info}}">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="text-capitalize" for="info">Info</label>
+                  <input class="form-control" name="info" id="info" type="text" value="{{developer.info}}">
+                </div>
               </div>
-            </div>
             </div>
           {{/if}}
 
@@ -86,10 +86,11 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">
-                  <label class="text-capitalize">Photo</label>
                   <p>
-                    <input class="form-control" name="imagePath" id="imagePath" type="text" value="{{developer.imagePath}}" disabled>
+                    <label class="text-capitalize" for="imagePath">Photo</label>
+                    <input class="form-control" name="imagePath" id="imagePathPublish" type="text" value="{{developer.imagePath}}" readonly="readonly">
                   </p>
+                  <p class="col-xs-4 col-md-2"><img class="img-developer img-responsive img-thubmnail" src="{{developer.imagePath}}" alt="Photo"></p>
 
                   <div class="dropzone-mendrew">
                     <div id="previews" class="dropzone-preview"></div>
