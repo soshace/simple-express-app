@@ -84,29 +84,19 @@
 
           {{#if developer.imagePath}}
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <p>
-                    <label class="text-capitalize" for="imagePath">Photo</label>
-                    <input class="form-control" name="imagePath" id="imagePathPublish" type="text" value="{{developer.imagePath}}" readonly="readonly">
-                  </p>
-                  <p class="col-xs-4 col-md-2"><img class="img-developer img-responsive img-thubmnail" src="{{developer.imagePath}}" alt="Photo"></p>
-
-                  <div class="dropzone-mendrew">
-                    <div id="previews" class="dropzone-preview"></div>
+                  <label class="text-capitalize" for="info">Photo</label>
+                  <div class="thumbnail">
+                    <a href="{{developer.imagePath}}" targe="_blank">
+                      <img src="{{developer.imagePath}}" alt="Photo">
+                    </a>
+                    <div class="caption">
+                      <p> <input class="form-control" name="imagePath" id="imagePathPublish" type="text" value="{{developer.imagePath}}" readonly="readonly"> </p>
+                      <p><button class="btn btn-primary change-image" type="button">Change...</button></p>
+                      <div class="dropzone"></div>
+                    </div>
                   </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="form-group">
-                <div class="col-sm-4">
-                  <button type="button" class="btn btn-submit fileinput-button">Add file</button>
-                </div>
-                <div class="col-sm-4">
-                  <button type="button" class="btn btn-info image-upload" style="display: none;">Upload</button>
                 </div>
               </div>
             </div>
@@ -121,26 +111,3 @@
   </div>
 {{/if}}
 
-<div id="preview-template" style="display: none;">
-
-  <div class="container">
-
-    <div class="row">
-      <div class="col-md-4">
-        <span class="preview"><img data-dz-thumbnail /></span>
-      </div>
-      <div class="col-md-4">
-        <p class="name" data-dz-name></p>
-        <strong class="error text-danger" data-dz-errormessage></strong>
-      </div>
-      <div class="col-md-2">
-        <p class="size" data-dz-size></p>
-        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
