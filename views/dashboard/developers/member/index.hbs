@@ -106,19 +106,42 @@
 
           {{#if developer.imagePath}}
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-12">
                 <div class="form-group">
+
                   <label class="text-capitalize" for="info">Photo</label>
-                  <div class="thumbnail">
-                    <a href="{{developer.imagePath}}" targe="_blank">
-                      <img class="img-developer" src="{{developer.imagePath}}" alt="Photo">
-                    </a>
-                    <div class="caption">
-                      <p> <input class="form-control" name="imagePath" id="imagePathPublish" type="text" value="{{developer.imagePath}}" readonly="readonly"> </p>
-                      <p><button class="btn btn-primary change-image" type="button">Change...</button></p>
-                      <div class="dropzone"></div>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+
+                      <div class="row">
+
+                        <div class="col-xs-6">
+                          <a class="full-image-link" href="{{developer.imagePath}}" targe="_blank">
+                            <img class="img-rounded preview-image" src="{{developer.imagePath}}" alt="Photo">
+                          </a>
+                        </div>
+
+                        <div class="col-xs-4">
+                          <p>
+                            <label class="control-label" for="previewImagePath">Preview image path</label>
+                            <input class="form-control" name="imagepath" id="previewImagePath" type="text" value="{{developer.imagepath}}" readonly="readonly">
+                          </p>
+                          <p>
+                            <label class="control-label" for="fullImagePath">Full image path</label>
+                            <input class="form-control" name="imagepath" id="fullImagePath" type="text" value="{{developer.imagepath}}" readonly="readonly">
+                          </p>
+                          <p><button class="btn btn-primary change-image" type="button">change...</button></p>
+                          <p><div class="dropzone"></div></p>
+                        </div>
+
+                      </div>
+
                     </div>
                   </div>
+
+                  <div class="row">
+                  </div>
+
                 </div>
               </div>
             </div>
