@@ -35,7 +35,7 @@ exports.upload = function(req, res, next) {
       },
       function resizeImage(value, callback) {
         var resizeFilePath = path.join(__dirname, '../../../public/files/resize' + uploadedFile.name);
-        imageMagick(uploadedFile.path).resize(500, 500).noProfile().write(resizeFilePath, function(err) {
+        imageMagick(uploadedFile.path).resize(500, 500).strip().interlace('Plane').quality(90).write(resizeFilePath, function(err) {
           if (err) return callback(err);
           return callback(null, resizeFilePath);
         });
