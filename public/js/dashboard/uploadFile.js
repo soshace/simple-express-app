@@ -35,8 +35,13 @@
     });
 
     myDropzone.on('success', function(event, response) {
-      document.getElementById('imagePathPublish').value = response.uploadedFile;
-      var image = document.querySelector('.img-developer').src = response.uploadedFile;
+      if (response.uploadedFile.images) {
+        $('#previewImagePath').val(response.uploadedFile.images.preview);
+        $('#fullImagePath').val(response.uploadedFile.images.full);
+
+        $('.preview-image').attr("src", response.uploadedFile.images.preview);
+        $('.full-image-link').attr("href", response.uploadedFile.images.full);
+      }
 
     });
 
@@ -91,7 +96,9 @@
       // listener for 'Crop and Upload' button in modal
       $uploadCrop.on('click', function() {
         // get cropped image data
-        var blob = $img.cropper('getCroppedCanvas').toDataURL();
+        var croppedCanvas = $img.cropper('getCroppedCanvas');
+        //sometimes it stands array
+        var blob = croppedCanvas.toDataURL("image/jpeg");
         // transform it to Blob object
         var newFile = dataURItoBlob(blob);
         // set 'cropped to true' (so that we don't get to that listener again)

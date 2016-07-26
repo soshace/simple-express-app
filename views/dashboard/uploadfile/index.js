@@ -6,6 +6,10 @@ var path = require('path');
 var imageMagick = require('gm').subClass({imageMagick: true});
 var async = require('async');
 
+var PREVIEW_IMAGE = {size: 500, prefix: 'preview_'};
+var FULL_IMAGE = {size: 1000, prefix: 'full_'};
+var UPLOAD_DIR = path.join(__dirname, '../../../public/files');
+
 exports.upload = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.uploadDir = path.join(__dirname, '../../../public/files');
@@ -14,6 +18,7 @@ exports.upload = function(req, res, next) {
   form.on('file', function(field, file) {
     uploadedFile.name = file.name;
     uploadedFile.path = file.path;
+    console.log("Image_path: %s\nimage hash: %s", file.path, file.hash);
   });
 
   form.on('error', function(err) {
@@ -33,21 +38,58 @@ exports.upload = function(req, res, next) {
           }
         });
       },
-      function resizeImage(value, callback) {
-        var resizeFilePath = path.join(__dirname, '../../../public/files/resize' + uploadedFile.name);
-        imageMagick(uploadedFile.path).resize(500, 500).strip().interlace('Plane').quality(90).write(resizeFilePath, function(err) {
-          if (err) return callback(err);
-          return callback(null, resizeFilePath);
+      function resizeImages(value, callback) {
+
+        async.parallel({
+
+          previewImage: function(callback) {
+            var previewImagePath = UPLOAD_DIR + '/' +  PREVIEW_IMAGE.prefix + uploadedFile.path.split('/').pop();
+            imageMagick(uploadedFile.path).resize(PREVIEW_IMAGE.size, PREVIEW_IMAGE.size).strip().interlace('Plane').quality(90).write(previewImagePath, function(err) {
+              if (err) return callback(err);
+              return callback(null, previewImagePath);
+            });
+          },
+
+          fullImage: function(callback) {
+            var fullImagePath = UPLOAD_DIR + '/' + FULL_IMAGE.prefix + uploadedFile.path.split('/').pop();
+            imageMagick(uploadedFile.path).resize(FULL_IMAGE.size, FULL_IMAGE.size).strip().interlace('Plane').quality(90).write(fullImagePath, function(err) {
+              if (err) return callback(err);
+              return callback(null, fullImagePath);
+            });
+          }
+
+        }, function(err, imagesPaths) {
+          return callback(null, imagesPaths);
         });
-      }], function responseWithLink(err, filePath) {
+
+      }], function responseWithLink(err, images) {
+
+        //remove temporary file
+        fs.unlink(uploadedFile.path, function(err) {
+          if (err) {
+            console.log(err);
+          }
+        });
 
         if (err) {
-          console.log(err);
-          res.status(415).end("Unsupported Media Type");
+          // this mean what we receive file, not image
+          // this logic not clear. Need to define special error meaning for hande different errors
+          // not image type and error while imagemagick work
+          console.log("we recieve file");
+          res.status(200).send({
+            uploadedFile: {file: uploadedFile.path}
+          });
+
         } else {
-          var publicPath = filePath.slice(filePath.indexOf('/file'));
-          res.status(200).send({uploadedFile: publicPath});
+          var previewPublicPath = images.previewImage.slice(images.previewImage.indexOf('/file'));
+          var fullPublickPath = images.fullImage.slice(images.fullImage.indexOf('/file'));
+          res.status(200).send({
+            uploadedFile: {
+              images: {preview: previewPublicPath, full: fullPublickPath}
+            }
+          });
         }
+
       });
 
     });
