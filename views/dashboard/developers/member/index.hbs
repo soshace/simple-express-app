@@ -1,3 +1,25 @@
+<div id="croppedModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="croppedModalLabel">
+  <div class="div modal-content" role="document">
+    <div class="modal-header">
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 id="croppedModalLabel" class="modal-title">Cropped Modal</h4>
+    </div>
+    <div class="modal-body">
+      <!-- <div class="row"> -->
+        <!-- <div class="col-xs-12"> -->
+          <div class="image-container"></div>
+        <!-- </div> -->
+      <!-- </div> -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+      <button class="btn btn-primary crop-upload" type="button">Save changes</button>
+    </div>
+  </div>
+</div>
+
 <h1>Developer</h1>
 
 {{#if developer.storage}}
@@ -89,7 +111,7 @@
                   <label class="text-capitalize" for="info">Photo</label>
                   <div class="thumbnail">
                     <a href="{{developer.imagePath}}" targe="_blank">
-                      <img src="{{developer.imagePath}}" alt="Photo">
+                      <img class="img-developer" src="{{developer.imagePath}}" alt="Photo">
                     </a>
                     <div class="caption">
                       <p> <input class="form-control" name="imagePath" id="imagePathPublish" type="text" value="{{developer.imagePath}}" readonly="readonly"> </p>

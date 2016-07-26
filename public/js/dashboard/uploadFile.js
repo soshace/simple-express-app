@@ -13,7 +13,8 @@
   }
 
   // modal window template
-  var modalTemplate = '<div class="modal"><!-- bootstrap modal here --></div>';
+  var modalTemplate = $('#croppedModal');
+  console.log(modalTemplate);
 
 
   Dropzone.autoDiscover = false;
@@ -28,27 +29,16 @@
       addRemoveLinks: true,
       parallelUploads: 1,
       clickable: " .change-image", // Define the element that should be used as click trigger to select files.
-
-      // init: function() {
-      //   var uploadButton = document.querySelector(".image-upload")
-      //   myDropzone = this;
-
-      //   this.on('addedfile', function() {
-      //     uploadButton.style.display = 'block';
-      //   });
-
-      //   this.on('reset', function() {
-      //     uploadButton.style.display = 'none';
-      //   });
-
-      //   this.on('success', function(event, response) {
-      //     document.getElementById('imagePathPublish').value = response.uploadedFile;
-      //     var image = document.querySelector('.img-developer').src = response.uploadedFile;
-
-      //   });
-      // },
+      init: function() {
+        $(".dropzone").hide();
+      },
     });
 
+    myDropzone.on('success', function(event, response) {
+      document.getElementById('imagePathPublish').value = response.uploadedFile;
+      var image = document.querySelector('.img-developer').src = response.uploadedFile;
+
+    });
 
     // listen to thumbnail event
     myDropzone.on('thumbnail', function (file) {
@@ -57,7 +47,7 @@
       if (file.cropped) {
         return;
       }
-      if (file.width < 800) {
+      if (file.width < 100) {
         // validate width to prevent too small files to be uploaded
         // .. add some error message here
         return;
@@ -82,11 +72,15 @@
 
         // initialize cropper for uploaded image
         $img.cropper({
-          aspectRatio: 16 / 9,
+          viewMode: 1,
+          aspectRatio: 4 / 3,
           autoCropArea: 1,
           movable: false,
           cropBoxResizable: true,
-          minContainerWidth: 850
+          minContainerWidth: 850,
+          minContainerHeight: 600,
+          minCropBoxWidth: 200,
+          minCropBoxHeight: 200,
         });
       };
       // read uploaded file (triggers code above)
