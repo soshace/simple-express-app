@@ -35,6 +35,7 @@
     }
 
     var body = JSON.stringify(formObject);
+    console.log(body);
 
     sendJSONPost(url, body);
   }

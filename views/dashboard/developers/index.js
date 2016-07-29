@@ -87,6 +87,8 @@ exports.updateById = function(req, res, next) {
     position: req.body.position,
     info: req.body.info,
     imagePath: req.body.imagePath,
+    previewImagePath: req.body.previewImagePath,
+    fullImagePath: req.body.fullImagePath,
     savePlace: req.body.formId
   };
 
